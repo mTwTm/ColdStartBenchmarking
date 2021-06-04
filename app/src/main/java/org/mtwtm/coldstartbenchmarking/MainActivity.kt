@@ -1,9 +1,7 @@
 package org.mtwtm.coldstartbenchmarking
 
-import android.os.Build
-import android.os.Bundle
-import android.os.Process
-import android.os.SystemClock
+import android.os.*
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import org.mtwtm.coldstartbenchmarking.metadata.ColdStartStats
 
@@ -26,6 +24,19 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         ColdStartStats.mainOnResumeMs = SystemClock.uptimeMillis()
+        Handler(Looper.getMainLooper()).postDelayed({
+            val content = "processCreatedMs: ${ColdStartStats.processCreatedMs}\n" +
+                    "applicationLoadedMs: ${ColdStartStats.applicationLoadedMs}\n" +
+                    "emptyProviderLoadedMs: ${ColdStartStats.emptyProviderOnCreateMs}\n" +
+                    "emptyProviderOnCreateMs: ${ColdStartStats.emptyProviderOnCreateMs}\n" +
+                    "applicationOnCreateMs: ${ColdStartStats.applicationOnCreateMs}\n" +
+                    "mainLoadedMs: ${ColdStartStats.mainLoadedMs}\n" +
+                    "mainOnCreateMs: ${ColdStartStats.mainOnCreateMs}\n" +
+                    "mainOnStartMs: ${ColdStartStats.mainOnStartMs}\n" +
+                    "mainOnResumeMs: ${ColdStartStats.mainOnResumeMs}\n" +
+                    "firstDrawMs: ${ColdStartStats.firstDrawMs}\n"
+            findViewById<TextView>(R.id.text).text = content
+        }, 1000L)
     }
 
     companion object {
